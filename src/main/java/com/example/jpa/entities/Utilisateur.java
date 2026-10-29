@@ -29,47 +29,47 @@ public class Utilisateur {
 
     public Utilisateur() {}
 
-    public Utilisateur(String nom, String email) {
-        this.nom = nom;
-        this.email = email;
+    public Utilisateur(String nomComplet, String adresseEmail) {
+        this.nom = nomComplet;
+        this.email = adresseEmail;
     }
 
-    public Utilisateur(String nom, String email, Salle salle) {
-        this.nom = nom;
-        this.email = email;
-        this.salle = salle;
+    public Utilisateur(String nomComplet, String adresseEmail, Salle salleAttribuee) {
+        this.nom = nomComplet;
+        this.email = adresseEmail;
+        this.salle = salleAttribuee;
     }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long idUtilisateur) {
+        this.id = idUtilisateur;
     }
 
     public String getNom() {
         return nom;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
+    public void setNom(String nomComplet) {
+        this.nom = nomComplet;
     }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmail(String adresseEmail) {
+        this.email = adresseEmail;
     }
 
     public Salle getSalle() {
         return salle;
     }
 
-    public void setSalle(Salle salle) {
-        this.salle = salle;
+    public void setSalle(Salle salleAttribuee) {
+        this.salle = salleAttribuee;
     }
 
     @Override

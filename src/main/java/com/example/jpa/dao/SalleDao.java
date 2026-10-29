@@ -11,19 +11,19 @@ public class SalleDao extends GenericDao<Salle> {
         super(Salle.class, em);
     }
 
-    public List<Salle> findByCapaciteMin(int capaciteMin) {
-        return em.createQuery("SELECT s FROM Salle s WHERE s.capacite >= :capaciteMin", Salle.class)
-                .setParameter("capaciteMin", capaciteMin)
+    public List<Salle> findByCapaciteMin(int placesMin) {
+        return em.createQuery("SELECT s FROM Salle s WHERE s.capacite >= :placesMin", Salle.class)
+                .setParameter("placesMin", placesMin)
                 .getResultList();
     }
 
-    public List<Salle> findByCapaciteMinimum(int capaciteMin) {
-        return findByCapaciteMin(capaciteMin);
+    public List<Salle> findByCapaciteMinimum(int placesMin) {
+        return findByCapaciteMin(placesMin);
     }
 
-    public List<Salle> findByDisponible(boolean disponible) {
-        return em.createQuery("SELECT s FROM Salle s WHERE s.disponible = :disponible", Salle.class)
-                .setParameter("disponible", disponible)
+    public List<Salle> findByDisponible(boolean statutDisponibilite) {
+        return em.createQuery("SELECT s FROM Salle s WHERE s.disponible = :statutDisponibilite", Salle.class)
+                .setParameter("statutDisponibilite", statutDisponibilite)
                 .getResultList();
     }
 }

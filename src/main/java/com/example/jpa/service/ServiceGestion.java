@@ -16,18 +16,18 @@ public class ServiceGestion {
 
     private final EntityManagerFactory emf;
     private final EntityManager em;
-    private final SalleDao salleDao;
-    private final UtilisateurDao utilisateurDao;
+    private final SalleDao salleRepository;
+    private final UtilisateurDao utilisateurRepository;
 
     public ServiceGestion() {
         this("gestionPU");
     }
 
-    public ServiceGestion(String persistenceUnitName) {
-        this.emf = Persistence.createEntityManagerFactory(persistenceUnitName);
+    public ServiceGestion(String nomUnitePersistance) {
+        this.emf = Persistence.createEntityManagerFactory(nomUnitePersistance);
         this.em = emf.createEntityManager();
-        this.salleDao = new SalleDao(em);
-        this.utilisateurDao = new UtilisateurDao(em);
+        this.salleRepository = new SalleDao(em);
+        this.utilisateurRepository = new UtilisateurDao(em);
     }
 
     public void fermer() {
@@ -46,74 +46,74 @@ public class ServiceGestion {
             em.createQuery("DELETE FROM Utilisateur").executeUpdate();
             em.createQuery("DELETE FROM Salle").executeUpdate();
             tx.commit();
-        } catch (RuntimeException e) {
+        } catch (RuntimeException ex) {
             if (tx.isActive()) {
                 tx.rollback();
             }
-            throw e;
+            throw ex;
         }
     }
 
     // Gestion des Salles
-    public void ajouterSalle(Salle salle) {
-        salleDao.create(salle);
+    public void ajouterSalle(Salle nouvelleSalle) {
+        salleRepository.create(nouvelleSalle);
     }
 
-    public Salle modifierSalle(Salle salle) {
-        return salleDao.update(salle);
+    public Salle modifierSalle(Salle salleAModifier) {
+        return salleRepository.update(salleAModifier);
     }
 
-    public void supprimerSalle(Salle salle) {
-        salleDao.delete(salle);
+    public void supprimerSalle(Salle salleASupprimer) {
+        salleRepository.delete(salleASupprimer);
     }
 
-    public void supprimerSalleParId(Long id) {
-        salleDao.deleteById(id);
+    public void supprimerSalleParId(Long idSalle) {
+        salleRepository.deleteById(idSalle);
     }
 
-    public Optional<Salle> trouverSalleParId(Long id) {
-        return salleDao.findById(id);
+    public Optional<Salle> trouverSalleParId(Long idSalle) {
+        return salleRepository.findById(idSalle);
     }
 
     public List<Salle> listerSalles() {
-        return salleDao.findAll();
+        return salleRepository.findAll();
     }
 
-    public List<Salle> rechercherSallesParCapacite(int capaciteMin) {
-        return salleDao.findByCapaciteMin(capaciteMin);
+    public List<Salle> rechercherSallesParCapacite(int capaciteSeuil) {
+        return salleRepository.findByCapaciteMin(capaciteSeuil);
     }
 
-    public List<Salle> rechercherSallesDisponibles(boolean disponible) {
-        return salleDao.findByDisponible(disponible);
+    public List<Salle> rechercherSallesDisponibles(boolean estDispo) {
+        return salleRepository.findByDisponible(estDispo);
     }
 
     // Gestion des Utilisateurs
-    public void ajouterUtilisateur(Utilisateur utilisateur) {
-        utilisateurDao.create(utilisateur);
+    public void ajouterUtilisateur(Utilisateur nouvelUtilisateur) {
+        utilisateurRepository.create(nouvelUtilisateur);
     }
 
-    public Utilisateur modifierUtilisateur(Utilisateur utilisateur) {
-        return utilisateurDao.update(utilisateur);
+    public Utilisateur modifierUtilisateur(Utilisateur userAModifier) {
+        return utilisateurRepository.update(userAModifier);
     }
 
-    public void supprimerUtilisateur(Utilisateur utilisateur) {
-        utilisateurDao.delete(utilisateur);
+    public void supprimerUtilisateur(Utilisateur userASupprimer) {
+        utilisateurRepository.delete(userASupprimer);
     }
 
-    public void supprimerUtilisateurParId(Long id) {
-        utilisateurDao.deleteById(id);
+    public void supprimerUtilisateurParId(Long idUser) {
+        utilisateurRepository.deleteById(idUser);
     }
 
-    public Optional<Utilisateur> trouverUtilisateurParId(Long id) {
-        return utilisateurDao.findById(id);
+    public Optional<Utilisateur> trouverUtilisateurParId(Long idUser) {
+        return utilisateurRepository.findById(idUser);
     }
 
     public List<Utilisateur> listerUtilisateurs() {
-        return utilisateurDao.findAll();
+        return utilisateurRepository.findAll();
     }
 
-    public List<Utilisateur> utilisateursParSalle(String nomSalle) {
-        return utilisateurDao.findBySalleNom(nomSalle);
+    public List<Utilisateur> utilisateursParSalle(String libelleSalle) {
+        return utilisateurRepository.findBySalleNom(libelleSalle);
     }
 
     public EntityManager getEntityManager() {

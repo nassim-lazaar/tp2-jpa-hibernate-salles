@@ -11,9 +11,9 @@ public class UtilisateurDao extends GenericDao<Utilisateur> {
         super(Utilisateur.class, em);
     }
 
-    public List<Utilisateur> findBySalleNom(String nomSalle) {
-        return em.createQuery("SELECT u FROM Utilisateur u WHERE u.salle.nom = :nomSalle", Utilisateur.class)
-                .setParameter("nomSalle", nomSalle)
+    public List<Utilisateur> findBySalleNom(String nomDeSalle) {
+        return em.createQuery("SELECT u FROM Utilisateur u WHERE u.salle.nom = :nomDeSalle", Utilisateur.class)
+                .setParameter("nomDeSalle", nomDeSalle)
                 .getResultList();
     }
 }

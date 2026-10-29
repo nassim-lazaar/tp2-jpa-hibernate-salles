@@ -34,75 +34,75 @@ public class ServiceGestionTest {
 
     @Test
     public void testCreationEtRechercheSalle() {
-        Salle salle = new Salle("Salle Test", 20);
-        service.ajouterSalle(salle);
+        Salle salleTest = new Salle("Salle Conférence Alpha", 50);
+        service.ajouterSalle(salleTest);
 
-        assertNotNull("L'ID de la salle doit être généré", salle.getId());
+        assertNotNull("L'ID généré ne doit pas être null", salleTest.getId());
 
-        List<Salle> salles = service.listerSalles();
-        assertFalse("La liste des salles ne doit pas être vide", salles.isEmpty());
-        assertEquals("Salle Test", salles.get(0).getNom());
+        List<Salle> listeSalles = service.listerSalles();
+        assertFalse("La liste des salles ne doit pas être vide", listeSalles.isEmpty());
+        assertEquals("Salle Conférence Alpha", listeSalles.get(0).getNom());
     }
 
     @Test
     public void testCreationUtilisateurAvecSalle() {
-        Salle salle = new Salle("Salle B", 15);
-        service.ajouterSalle(salle);
+        Salle salleAssignee = new Salle("Salle TD 1", 30);
+        service.ajouterSalle(salleAssignee);
 
-        Utilisateur utilisateur = new Utilisateur("Alice", "alice@example.com", salle);
-        service.ajouterUtilisateur(utilisateur);
+        Utilisateur nouvelUtilisateur = new Utilisateur("Nassim", "nassim@test.ma", salleAssignee);
+        service.ajouterUtilisateur(nouvelUtilisateur);
 
-        assertNotNull("L'ID de l'utilisateur doit être généré", utilisateur.getId());
+        assertNotNull("L'ID utilisateur doit être généré", nouvelUtilisateur.getId());
 
-        List<Utilisateur> utilisateurs = service.listerUtilisateurs();
-        assertFalse("La liste des utilisateurs ne doit pas être vide", utilisateurs.isEmpty());
-        assertEquals("Alice", utilisateurs.get(0).getNom());
-        assertNotNull("L'utilisateur doit avoir une salle associée", utilisateurs.get(0).getSalle());
-        assertEquals("Salle B", utilisateurs.get(0).getSalle().getNom());
+        List<Utilisateur> listeUtilisateurs = service.listerUtilisateurs();
+        assertFalse("La liste des utilisateurs ne doit pas être vide", listeUtilisateurs.isEmpty());
+        assertEquals("Nassim", listeUtilisateurs.get(0).getNom());
+        assertNotNull("L'utilisateur doit posséder une salle", listeUtilisateurs.get(0).getSalle());
+        assertEquals("Salle TD 1", listeUtilisateurs.get(0).getSalle().getNom());
     }
 
     @Test
     public void testRechercheUtilisateursParSalle() {
-        Salle salle = new Salle("Salle C", 30);
-        service.ajouterSalle(salle);
+        Salle salleCommune = new Salle("Labo Informatique", 25);
+        service.ajouterSalle(salleCommune);
 
-        Utilisateur u1 = new Utilisateur("Bob", "bob@example.com", salle);
-        Utilisateur u2 = new Utilisateur("Carol", "carol@example.com", salle);
-        service.ajouterUtilisateur(u1);
-        service.ajouterUtilisateur(u2);
+        Utilisateur membre1 = new Utilisateur("Etudiant 1", "e1@test.ma", salleCommune);
+        Utilisateur membre2 = new Utilisateur("Etudiant 2", "e2@test.ma", salleCommune);
+        service.ajouterUtilisateur(membre1);
+        service.ajouterUtilisateur(membre2);
 
-        List<Utilisateur> utilisateurs = service.utilisateursParSalle("Salle C");
-        assertEquals(2, utilisateurs.size());
+        List<Utilisateur> membresTrouves = service.utilisateursParSalle("Labo Informatique");
+        assertEquals(2, membresTrouves.size());
     }
 
     @Test
     public void testRechercheSallesParCapacite() {
         service.ajouterSalle(new Salle("Petite Salle", 10));
-        service.ajouterSalle(new Salle("Moyenne Salle", 25));
-        service.ajouterSalle(new Salle("Grande Salle", 60));
+        service.ajouterSalle(new Salle("Salle Moyenne", 35));
+        service.ajouterSalle(new Salle("Grand Amphi", 150));
 
-        List<Salle> salles = service.rechercherSallesParCapacite(25);
-        assertEquals(2, salles.size());
+        List<Salle> sallesFiltrees = service.rechercherSallesParCapacite(35);
+        assertEquals(2, sallesFiltrees.size());
     }
 
     @Test
     public void testRechercheSallesDisponibles() {
-        service.ajouterSalle(new Salle("Salle Dispo", 20, true));
-        service.ajouterSalle(new Salle("Salle Occupée", 20, false));
+        service.ajouterSalle(new Salle("Salle Libre", 20, true));
+        service.ajouterSalle(new Salle("Salle Reservee", 20, false));
 
-        List<Salle> dispos = service.rechercherSallesDisponibles(true);
-        assertEquals(1, dispos.size());
-        assertEquals("Salle Dispo", dispos.get(0).getNom());
+        List<Salle> sallesLibres = service.rechercherSallesDisponibles(true);
+        assertEquals(1, sallesLibres.size());
+        assertEquals("Salle Libre", sallesLibres.get(0).getNom());
     }
 
     @Test
     public void testSuppressionSalle() {
-        Salle s = new Salle("Salle Temporaire", 12);
-        service.ajouterSalle(s);
-        Long id = s.getId();
+        Salle salleEphemere = new Salle("Salle Temporaire", 15);
+        service.ajouterSalle(salleEphemere);
+        Long idSalle = salleEphemere.getId();
 
-        assertTrue(service.trouverSalleParId(id).isPresent());
-        service.supprimerSalle(s);
-        assertFalse(service.trouverSalleParId(id).isPresent());
+        assertTrue(service.trouverSalleParId(idSalle).isPresent());
+        service.supprimerSalle(salleEphemere);
+        assertFalse(service.trouverSalleParId(idSalle).isPresent());
     }
 }

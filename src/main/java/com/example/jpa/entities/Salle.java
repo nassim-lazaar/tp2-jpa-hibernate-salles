@@ -26,48 +26,48 @@ public class Salle {
 
     public Salle() {}
 
-    public Salle(String nom, int capacite) {
-        this.nom = nom;
-        this.capacite = capacite;
+    public Salle(String nomSalle, int capaciteAccueil) {
+        this.nom = nomSalle;
+        this.capacite = capaciteAccueil;
         this.disponible = true;
     }
 
-    public Salle(String nom, int capacite, boolean disponible) {
-        this.nom = nom;
-        this.capacite = capacite;
-        this.disponible = disponible;
+    public Salle(String nomSalle, int capaciteAccueil, boolean estDisponible) {
+        this.nom = nomSalle;
+        this.capacite = capaciteAccueil;
+        this.disponible = estDisponible;
     }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long idSalle) {
+        this.id = idSalle;
     }
 
     public String getNom() {
         return nom;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
+    public void setNom(String nomSalle) {
+        this.nom = nomSalle;
     }
 
     public int getCapacite() {
         return capacite;
     }
 
-    public void setCapacite(int capacite) {
-        this.capacite = capacite;
+    public void setCapacite(int capaciteAccueil) {
+        this.capacite = capaciteAccueil;
     }
 
     public boolean isDisponible() {
         return disponible;
     }
 
-    public void setDisponible(boolean disponible) {
-        this.disponible = disponible;
+    public void setDisponible(boolean estDisponible) {
+        this.disponible = estDisponible;
     }
 
     @Override

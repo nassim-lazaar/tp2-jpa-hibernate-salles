@@ -13,62 +13,62 @@ public class Main {
         System.out.println("   TP 2 : Gestion des Salles et Utilisateurs (JPA/Hibernate) ");
         System.out.println("============================================================");
 
-        ServiceGestion service = new ServiceGestion();
+        ServiceGestion gestionnaire = new ServiceGestion();
 
         try {
             System.out.println("\n[1] Création et insertion des Salles...");
-            Salle salleA = new Salle("Salle Java", 30, true);
-            Salle salleB = new Salle("Amphi Turing", 150, true);
-            Salle salleC = new Salle("Lab IA", 25, false);
+            Salle salleA = new Salle("Salle B204 - Algorithmique", 40, true);
+            Salle salleB = new Salle("Amphithéâtre Al-Khwarizmi", 200, true);
+            Salle salleC = new Salle("Laboratoire IA & Réseaux", 25, false);
 
-            service.ajouterSalle(salleA);
-            service.ajouterSalle(salleB);
-            service.ajouterSalle(salleC);
-            System.out.println("-> 3 salles créées avec succès.");
+            gestionnaire.ajouterSalle(salleA);
+            gestionnaire.ajouterSalle(salleB);
+            gestionnaire.ajouterSalle(salleC);
+            System.out.println("-> Salles enregistrées avec succès.");
 
             System.out.println("\n[2] Création et affectation des Utilisateurs...");
-            Utilisateur u1 = new Utilisateur("Nassim Lazaar", "nassim@example.com", salleA);
-            Utilisateur u2 = new Utilisateur("Sara Alami", "sara@example.com", salleA);
-            Utilisateur u3 = new Utilisateur("Karim Idrissi", "karim@example.com", salleB);
+            Utilisateur user1 = new Utilisateur("Nassim Lazaar", "n.lazaar@ump.ac.ma", salleA);
+            Utilisateur user2 = new Utilisateur("Yassine Mansour", "y.mansour@ump.ac.ma", salleA);
+            Utilisateur user3 = new Utilisateur("Siham Berrada", "s.berrada@ump.ac.ma", salleB);
 
-            service.ajouterUtilisateur(u1);
-            service.ajouterUtilisateur(u2);
-            service.ajouterUtilisateur(u3);
-            System.out.println("-> 3 utilisateurs créés et associés à des salles.");
+            gestionnaire.ajouterUtilisateur(user1);
+            gestionnaire.ajouterUtilisateur(user2);
+            gestionnaire.ajouterUtilisateur(user3);
+            System.out.println("-> Utilisateurs affectés aux salles.");
 
-            System.out.println("\n[3] Liste de toutes les Salles :");
-            for (Salle s : service.listerSalles()) {
+            System.out.println("\n[3] Répertoire des Salles :");
+            for (Salle s : gestionnaire.listerSalles()) {
                 System.out.println("   - " + s);
             }
 
-            System.out.println("\n[4] Liste de tous les Utilisateurs :");
-            for (Utilisateur u : service.listerUtilisateurs()) {
+            System.out.println("\n[4] Registre des Utilisateurs :");
+            for (Utilisateur u : gestionnaire.listerUtilisateurs()) {
                 System.out.println("   - " + u);
             }
 
-            System.out.println("\n[5] Recherche des Utilisateurs dans 'Salle Java' :");
-            List<Utilisateur> usersJava = service.utilisateursParSalle("Salle Java");
-            for (Utilisateur u : usersJava) {
-                System.out.println("   - " + u.getNom() + " (" + u.getEmail() + ")");
+            System.out.println("\n[5] Utilisateurs présents dans 'Salle B204 - Algorithmique' :");
+            List<Utilisateur> membresSalleA = gestionnaire.utilisateursParSalle("Salle B204 - Algorithmique");
+            for (Utilisateur u : membresSalleA) {
+                System.out.println("   - " + u.getNom() + " <" + u.getEmail() + ">");
             }
 
-            System.out.println("\n[6] Recherche des Salles avec capacité >= 30 :");
-            List<Salle> sallesGrandes = service.rechercherSallesParCapacite(30);
-            for (Salle s : sallesGrandes) {
-                System.out.println("   - " + s.getNom() + " (Capacité: " + s.getCapacite() + ")");
+            System.out.println("\n[6] Salles d'une capacité minimale de 30 places :");
+            List<Salle> sallesFiltrees = gestionnaire.rechercherSallesParCapacite(30);
+            for (Salle s : sallesFiltrees) {
+                System.out.println("   - " + s.getNom() + " (Capacité : " + s.getCapacite() + ")");
             }
 
-            System.out.println("\n[7] Recherche des Salles disponibles :");
-            List<Salle> sallesDispo = service.rechercherSallesDisponibles(true);
-            for (Salle s : sallesDispo) {
+            System.out.println("\n[7] Salles actuellement disponibles :");
+            List<Salle> sallesDispos = gestionnaire.rechercherSallesDisponibles(true);
+            for (Salle s : sallesDispos) {
                 System.out.println("   - " + s.getNom());
             }
 
             System.out.println("\n============================================================");
-            System.out.println("   Exécution terminée avec succès !");
+            System.out.println("   Exécution du service terminée avec succès !");
             System.out.println("============================================================");
         } finally {
-            service.fermer();
+            gestionnaire.fermer();
         }
     }
 }
