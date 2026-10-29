@@ -1,53 +1,54 @@
-# TP 2 : Gestion des Salles et Utilisateurs avec JPA & Hibernate
+# TP 2 : Gestion des Salles et Utilisateurs avec JPA et Hibernate
 
-Application Java console de modélisation et de gestion d'entités JPA (`Salle` et `Utilisateur`) utilisant **Hibernate 5.6** et une base de données en mémoire **H2**, sans conteneur EJB/JTA (gestion manuelle des transactions en mode `RESOURCE_LOCAL`).
+Application Java console de modélisation et de gestion d'entités JPA (`Salle` et `Utilisateur`) avec Hibernate 5.6 et une base de données en mémoire H2, sans conteneur EJB/JTA (mode `RESOURCE_LOCAL`).
 
 ---
 
-## 🏗️ Structure & Architecture du Projet
+## Architecture du Projet
 
 * **Entités JPA** (`com.example.jpa.entities`) :
-  * `Salle` : Clé primaire auto-générée (`@Id`, `@GeneratedValue`), nom unique, capacité d'accueil et statut de disponibilité.
-  * `Utilisateur` : Clé primaire, nom complet, adresse email unique, relation `@ManyToOne` avec clé étrangère `salle_id`.
+  * `Salle` : Identifiant auto-généré, nom unique, capacité d'accueil et statut de disponibilité.
+  * `Utilisateur` : Identifiant auto-généré, nom complet, adresse email unique, relation `@ManyToOne` vers `Salle`.
 * **Couche DAO** (`com.example.jpa.dao`) :
-  * `GenericDao<T>` : Opérations CRUD génériques (`create`, `find`, `update`, `delete`, `findAll`) avec `EntityTransaction` (`begin`, `commit`, `rollback`).
+  * `GenericDao<T>` : Opérations CRUD génériques (`create`, `find`, `update`, `delete`, `findAll`) avec transactions manuelles (`EntityTransaction`).
   * `SalleDao` : Requêtes JPQL filtrées par seuil de capacité minimale et disponibilité.
-  * `UtilisateurDao` : Requête JPQL par jointure sur le nom de la salle.
-* **Couche Service & Application** (`com.example.jpa.service` & `com.example.jpa`) :
-  * `ServiceGestion` : Façade métier gérant le cycle de vie de l'`EntityManagerFactory` et exposant les services.
-  * `Main` : Point d'entrée console pour la démonstration des opérations.
-* **Tests Unitaires** (`com.example.jpa.test`) :
-  * `ServiceGestionTest` : Suite de tests JUnit 4 validant la persistance, l'association des clés étrangères, les requêtes JPQL et le nettoyage des données.
+  * `UtilisateurDao` : Requête JPQL avec jointure pour retrouver les utilisateurs d'une salle par nom.
+* **Couche Service** (`com.example.jpa.service`) :
+  * `ServiceGestion` : Point d'accès métier et gestion du cycle de vie de l'`EntityManagerFactory`.
+* **Application & Tests** :
+  * `Main` : Démonstration complète des fonctionnalités en console.
+  * `ServiceGestionTest` : Suite de tests unitaires JUnit 4.
 
 ---
 
-## ⚙️ Compilation et Exécution
+## Exécution
 
-Lancer l'ensemble des tests unitaires avec Maven :
-```bash
-mvn test
-```
+Pour compiler et exécuter l'application console :
 
-Lancer l'application console de démonstration :
 ```bash
 mvn compile exec:java
 ```
 
+Pour lancer les tests unitaires :
+
+```bash
+mvn test
+```
+
 ---
 
-## 🖥️ Résultat d'Exécution des Tests Unitaires
+## Résultat d'Exécution de l'Application
 
-Ci-dessous la capture d'écran authentique issue du terminal lors du lancement de la suite de tests automatisés (`mvn test`) :
+Capture d'écran du terminal affichant le résultat de l'exécution du programme Java (`Main`) :
 
-![Exécution des tests Maven](tests_execution.png)
+![Resultat d execution](execution_result.png)
 
-### Description de la capture d'écran :
-1. **Initialisation Hibernate ORM** : Hibernate `5.6.15.Final` se connecte à la base H2 en mémoire (`jdbc:h2:mem:testdb`) et génère dynamiquement le schéma relationnel (tables `salles` et `utilisateurs`, contraintes d'unicité et clé étrangère `FKm3nbnwwb1x028gwewwusg2iks`).
-2. **Exécution des 6 tests JUnit 4** :
-   - `testCreationEtRechercheSalle` : insertion et vérification de la clé primaire générée.
-   - `testCreationUtilisateurAvecSalle` : liaison bidirectionnelle d'un utilisateur à sa salle.
-   - `testRechercheUtilisateursParSalle` : validation de la requête JPQL avec jointure.
-   - `testRechercheSallesParCapacite` : filtrage par seuil de capacité minimale.
-   - `testRechercheSallesDisponibles` : filtrage par statut booléen.
-   - `testSuppressionSalle` : suppression avec vérification d'absence via `Optional`.
-3. **Bilan Maven** : `Tests run: 6, Failures: 0, Errors: 0, Skipped: 0` suivi de **`BUILD SUCCESS`**.
+### Description du résultat d'exécution :
+1. **Démarrage et Schéma** : Hibernate initialise la base H2 en mémoire et applique le schéma relationnel (tables `salles`, `utilisateurs`, contraintes d'unicité et clé étrangère).
+2. **Création des Entités** : Insertion de trois salles (`Salle B204 - Algorithmique`, `Amphithéâtre Al-Khwarizmi`, `Laboratoire IA & Réseaux`) et de trois utilisateurs associés.
+3. **Affichage des Données** : Liste complète des salles et utilisateurs persistés en base.
+4. **Requêtes JPQL** :
+   - Recherche des utilisateurs rattachés à la salle `Salle B204 - Algorithmique`.
+   - Filtrage des salles ayant une capacité supérieure ou égale à 30 places.
+   - Filtrage des salles actuellement disponibles.
+5. **Clôture** : Fermeture propre de l'EntityManager et de la connexion H2 sans erreurs.
